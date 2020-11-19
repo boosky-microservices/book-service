@@ -1,0 +1,5 @@
+export enum Events {
+    SEND_BOOK_BULK = 'SEND_BOOK_BULK',
+    SEND_BOOK = 'SEND_BOOK',
+    VIEW_INTERACTION = 'VIEW_INTERACTION',
+}

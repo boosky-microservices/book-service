@@ -54,9 +54,7 @@ export const getBook = async (req: Request, res: Response) => {
   if (!bookResult.data._id) {
     const sendBookBulkEvent: Event = {
       type: Events.SEND_BOOK,
-      payload: {
-        book: bookResult.data,
-      },
+      payload: bookResult.data,
       date: '' + Date.now(),
     };
 

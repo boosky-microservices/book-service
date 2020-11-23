@@ -1,28 +1,25 @@
-name: deploy
-
-on:
-  push:
-    branches:
-      - master
-
+name: deploy books service to lambda
+on: [push]
 jobs:
-  deploy:
-    name: deploy
+
+  deploy_source:
+    name: deploy lambda from source
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - run: npm ci
-    - name: serverless deploy
-      uses: serverless/github-action@master
-      with:
-        args: deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: checkout source code
+        uses: actions/checkout@v1
+      - uses: actions/setup-node@v2.1.2
+      - uses: actions/setup-python@v2
+      - name: Install aws cli and deploy
+        run: pip install awscli
+      - run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+      - run: aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: aws configure set region eu-west-3
+      - name: npm install
+        run: npm install
+      - name: build ts
+        run: npm run tsc && mv ./dist/app.js ./dist/index.js && mv node_modules ./dist/
+      - name: zip source
+        run: cd ./dist && zip -r deployment.zip *
+      - name: deploy to aws
+        run: aws lambda update-function-code --function-name books-service --zip-file fileb://dist/deployment.zip

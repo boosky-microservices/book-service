@@ -20,6 +20,6 @@ jobs:
       - name: build ts
         run: npx webpack --mode production
       - name: zip source
-        run: cd ./webpack && zip -r deployment.zip *
+        run: cd .webpack && zip -r deployment.zip *
       - name: deploy to aws
         run: aws lambda update-function-code --function-name books-service --zip-file fileb://.webpack/deployment.zip

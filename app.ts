@@ -1,6 +1,5 @@
-import express, {Request, Response} from 'express';
+import express from 'express';
 import Logger from './config/logger.config';
-import swagger from './config/swagger.config';
 import methodOverride from 'method-override';
 import { buildConnection } from './config/database.config';
 import { loadEnvVariables } from './config/dotenv.config';
@@ -21,11 +20,10 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cors());
 app.use(cookieParser());
 app.use(cookieMiddleware);
-import routes from './routes/app.routes';
 
-app.use('/health', (req, res) => res.send('ok'));
-app.use('/api/v1/', routes);
-app.use('/api-docs', swagger);
+import bookRoutes from './routes/book.routes';
+
+app.use('/books', bookRoutes);
 
 const PORT = process.env.PORT || 3001;
 

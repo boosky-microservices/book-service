@@ -1,4 +1,4 @@
-name: deploy books service to lambda
+name: deploy
 on: [push]
 jobs:
 

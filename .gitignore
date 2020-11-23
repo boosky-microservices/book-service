@@ -42,3 +42,5 @@ spec/*
 /.serverless/cloudformation-template-update-stack.json
 /.serverless/review-service.zip
 /.serverless/serverless-state.json
+
+.webpack

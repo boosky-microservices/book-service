@@ -9,8 +9,11 @@ import {APIGatewayProxyHandler} from 'aws-lambda';
 import serverless from 'serverless-http';
 import cookieParser from 'cookie-parser';
 import { cookieMiddleware } from './config/auth.config';
+
+if (process.env.NODE_ENV === 'development') {
 // Load environment variables
-loadEnvVariables();
+    loadEnvVariables();
+}
 
 const app = express();
 
@@ -38,7 +41,6 @@ buildConnection()
         Logger.error('Error on start: ' + err.stack);
         process.exit(1);
     });
-
 
 // @ts-ignore
 export const handler: APIGatewayProxyHandler = serverless(app);

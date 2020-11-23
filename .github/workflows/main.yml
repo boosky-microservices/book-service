@@ -18,8 +18,8 @@ jobs:
       - name: npm install
         run: npm install
       - name: build ts
-        run: npm run tsc && mv ./dist/app.js ./dist/index.js && mv node_modules ./dist/
+        run: npx webpack --mode production
       - name: zip source
-        run: cd ./dist && zip -r deployment.zip *
+        run: cd ./webpack && zip -r deployment.zip *
       - name: deploy to aws
-        run: aws lambda update-function-code --function-name books-service --zip-file fileb://dist/deployment.zip
+        run: aws lambda update-function-code --function-name books-service --zip-file fileb://.webpack/deployment.zip
